@@ -5,11 +5,24 @@
 import json
 from tools.fetch import json_response, dict_response
 from tools.toolkits import filterize
-from tools.gettown import sehirlerDbJsonReq, ilcelerDbJsonReq
 import urllib
 import requests
 
 
+def sehirlerDbJsonReq(countryId=2, check=False):
+    data = diyanetApiReq(url='PrayerTime/FillState',
+                         qargs={'countryCode': countryId})
+    if check:
+        newdata = {}
+        for k,v in data.iteritems():
+            newdata[ k.replace('/','-') ] = v
+        return newdata
+    return data
+
+def ilcelerDbJsonReq(cityId):
+    data = diyanetApiReq(url='PrayerTime/FillCity',
+                         qargs={'ItemId': cityId}, )
+    return data
 def fillState(countryCode=2, *args, **kwargs):
     """docstring for fillState"""
     data = diyanetApiReq(url='PrayerTime/FillState',
