@@ -45,14 +45,16 @@ def prayerTimes(stateName, name, countryName=2,
                                 'stateName': stateName,
                                 'name': name},
                          method='post', filter=False, *args, **kwargs)
+    if data['ItemId'] == 0: # raise Exception | ValueError | requests.exceptino.HTTPError 
+        return dict()
     if minimal:
         mini = {}
         keys = ['HicriTarih', 'UlkeAdi', 'SehirAdi', 'KibleAcisi', 'MoonSrc',
                 'Imsak', 'Gunes', 'Ogle', 'Ikindi', 'Aksam', 'Yatsi']
         for k in keys:
             mini[k] = data[k]
-        return mini
-    return data
+        return json.dumps(mini)
+    return json.dumps ( data )
 
 
 def diyanetApiReq(url, qargs, method='get', filter=True, dtype='json'):
