@@ -5,6 +5,7 @@
 import json
 from tools.fetch import json_response, dict_response
 from tools.toolkits import filterize
+from tools.gettown import sehirlerDbJsonReq, ilcelerDbJsonReq
 import urllib
 import requests
 
@@ -137,7 +138,6 @@ if __name__ == '__main__':
                       stateName=504,
                       name = 9197)
 
-    from gettown import sehirlerDbJsonReq, ilcelerDbJsonReq
     # print sehirlerDbJsonReq()
     print ilcelerDbJsonReq(500)
 

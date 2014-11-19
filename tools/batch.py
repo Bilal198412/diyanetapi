@@ -2,34 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-import json
-from apiv2 import diyanetApiReq
-from tools.toolkits import data2json, fireBaseIO
+from tools.firebase import fireBaseIO
 from ulkedbv2 import ulkeDict
-from pprint import pprint
 import logging
-logging.basicConfig(filename='_logs/gettown.log', level=logging.INFO)
-
-# TODO Memoize this≡ (url, *qargs*, method = 'get', filter = True, dtype =
-# 'json') ≡jedi≡
-
-
-def sehirlerDbJsonReq(countryId=2, check=False):
-    data = diyanetApiReq(url='PrayerTime/FillState',
-                         qargs={'countryCode': countryId})
-    if check:
-        newdata = {}
-        for k,v in data.iteritems():
-            newdata[ k.replace('/','-') ] = v
-        return newdata
-    return data
-
-
-def ilcelerDbJsonReq(cityId):
-    data = diyanetApiReq(url='PrayerTime/FillCity',
-                         qargs={'ItemId': cityId}, )
-    return data
-
+import ulkedbv2
+from apiv2 import prayerTimes
+from tools.gettown import sehirlerDbJsonReq, ilcelerDbJsonReq
 
 def bb():
     ulkeler = ulkeDict(keys=[52, 33])
@@ -63,7 +41,6 @@ def updatePrayerTimes(*args, **kwargs):
     # TODO Generate a list that contains all state/country/city codes and names
     # Iterate this list
 
-    from apiv2 import prayerTimes
     vakitler = prayerTimes(**source)
     data = dict(Updated={'.sv': 'timestamp'}, Data=vakitler)
     fireBaseIO(source['countryName'] + '/Childs/DIPKARPAZ/Vakitler', data)
@@ -71,8 +48,6 @@ def updatePrayerTimes(*args, **kwargs):
 
 
 def bubi():
-    import requests as req
-    import ulkedbv2
     bulky = dict()
     # ulkeler = ulkedbv2.ulkeDict().keys()[190:]
     ulkeler = ulkedbv2.ulkeDict(keys=[21, 23, 207, 35, 60, 61,
@@ -82,7 +57,7 @@ def bubi():
         ukey = str(ulke)
         print ' > Trying %s ' % ulke
         bulky[ukey] = dict()
-        db = req.get('https://ahmedseref.firebaseio.com/%s.json' % ulke).json()
+        db = requests.get('https://ahmedseref.firebaseio.com/%s.json' % ulke).json()
         if int(ulke) not in [52, 2, 33]:
             for i in db['Childs']:
                 if not db['Childs'][i].has_key('Value'):
@@ -122,7 +97,3 @@ def bubi():
     # data2json(bulky, 'bulky')
     # fireBaseIO(app = 'namazvaktim' url ='', data = bulky )
     return
-
-if __name__ == '__main__':
-    bb()
-    bubi()
