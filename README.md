@@ -5,8 +5,8 @@ This package is used for fetching prayer times from 'Presidency of Religious Aff
 [Prayer Times](http://www.diyanet.gov.tr/en/namazvakitleri)
 
 Usage
-``` ahmed@UBUNTU $ python -m diyanetapi```
 
+``` AHMED@UBUNTU $ python -m diyanetapi```
 ```
 {'Aksam': u'16:32',
  'Gunes': u'06:13',
