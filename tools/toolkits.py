@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
 import json
-from pprint import pprint
 
 def data2json(data, file, folder='_json/', ext='.json'):
+    """ 
+        Dumps the json data as a new file
+    """
     fullPath = folder + file + ext
     f = open(fullPath, 'w')
     f.write('%s' % json.dumps(data))
@@ -14,6 +15,10 @@ def data2json(data, file, folder='_json/', ext='.json'):
     pass
 
 def filterize(data):
+    """
+        Generates a new dictionary and strips Text and Value keys.
+        New dictionary format is : data[Value] = Text
+    """
     f = {}
     for i in data:
         f[i['Text']] = dict( Text = i['Text'],
