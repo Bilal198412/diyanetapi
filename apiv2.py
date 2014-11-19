@@ -45,6 +45,8 @@ def prayerTimes(stateName, name, countryName=2,
                                 'stateName': stateName,
                                 'name': name},
                          method='post', filter=False, *args, **kwargs)
+    if data['ItemId'] == 0: # raise Exception | ValueError | requests.exceptino.HTTPError 
+        return dict()
     if minimal:
         mini = {}
         keys = ['HicriTarih', 'UlkeAdi', 'SehirAdi', 'KibleAcisi', 'MoonSrc',
