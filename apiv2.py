@@ -74,83 +74,13 @@ def diyanetApiReq(url, qargs, method='get', filter=True, dtype='json'):
         # TODO log and raise exception
         pass
 
-# --------- WOULD BE DEPRECATED ---------#
-
-
-def diyanetApiGet(url, query_args):
-    """docstring for diyanetApiGet"""
-    baseUrl = 'http://www.diyanet.gov.tr/'
-    p = urllib.urlencode(query_args)
-    conn = urllib.urlopen(baseUrl + url, p)
-    resp = conn.read()
-    data = json.JSONDecoder().decode(resp)
-    return data
-
-
-def diyanetApi(url, query_args, dtype='dict', vakit=False, *args, **kwargs):
-    """docstring for diyanetapi"""
-    baseUrl = 'http://www.diyanet.gov.tr/'
-    conn = json_response(baseUrl + url, query_args)
-
-    if dtype == 'dict':
-        return dict_response(conn)
-    elif dtype == 'json':
-        return json.dumps(dict_response(conn))
-
-
-def vakitCek2(countryName=2, stateName=572, name=9872):
-    """docstring for vakitcek"""
-
-    url = 'PrayerTime/PrayerTimesSet'
-    query_args = {'countryName': countryName,
-                  'itemSource': "inner",
-                  'stateName': stateName,
-                  'name': name}
-    return diyanetApi(url, query_args)
-
-
-def sehirListe(countryCode=2, *args, **kwargs):
-    """docstring for sehirlistesi"""
-    url = 'PrayerTime/FillState'
-    query_args = {'countryCode': str(countryCode)}
-    return diyanetApiGet(url, query_args)
-
-
-def ilceListe(ItemId=539, *args, **kwargs):
-    """docstring for ilcelistesi"""
-    url = 'PrayerTime/FillCity'
-    query_args = {'ItemId': str(ItemId)}
-    return diyanetApiGet(url, query_args)
-
-# --------------------------
-
-
-def vakitcek(country_name=2, state_name=572, name=9872, dtype='json'):
-    """docstring for fetch"""
-    url = 'http://www.diyanet.gov.tr/PrayerTime/PrayerTimesSet'
-    query_args = {'countryName': country_name,
-                  'itemSource': "inner",
-                  'stateName': state_name,
-                  'name': name}
-
-    conn = json_response(url, query_args)
-
-    if dtype == 'dict':
-        return dict_response(conn)
-    elif dtype == 'json':
-        return json.dumps(dict_response(conn))
-
 
 if __name__ == '__main__':
-    # print vakitCek2()
-    # import ipdb; ipdb.set_trace() # BREAKPOINT
-    # x = ilceListe()
-    # print x
     # print prayerTimes( stateName = 504, name = 9197, countryName = 2)
     print prayerTimes(countryName=2,
                       stateName=504,
                       name = 9197)
 
     # print sehirlerDbJsonReq()
-    print ilcelerDbJsonReq(500)
+    # print ilcelerDbJsonReq(500)
 
