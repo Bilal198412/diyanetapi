@@ -37,13 +37,21 @@ def fillCity(cityId, *args, **kwargs):
     return data
 
 
-def prayerTimes(stateName, name, countryName=2, *args, **kwargs):
+def prayerTimes(stateName, name, countryName=2,
+                minimal = True, *args, **kwargs):
     """docstring for prayerTimes"""
     data = diyanetApiReq(url='PrayerTime/PrayerTimesSet',
                          qargs={'countryName': countryName,
                                 'stateName': stateName,
                                 'name': name},
                          method='post', filter=False, *args, **kwargs)
+    if minimal:
+        mini = {}
+        keys = ['HicriTarih', 'UlkeAdi', 'SehirAdi', 'KibleAcisi', 'MoonSrc',
+                'Imsak', 'Gunes', 'Ogle', 'Ikindi', 'Aksam', 'Yatsi']
+        for k in keys:
+            mini[k] = data[k]
+        return mini
     return data
 
 
