@@ -9,20 +9,21 @@ import ulkedbv2
 from apiv2 import prayerTimes
 from tools.gettown import sehirlerDbJsonReq, ilcelerDbJsonReq
 
+
 def bb():
     ulkeler = ulkeDict(keys=[52, 33])
-    ulkeler = ulkeDict(keys=[13, 21, 23, 207, 35, 60, 61,
+    ulkeler = ulkeDict(keys=[21, 23, 207, 35, 60, 61,
                              117, 204, 49, 208])
     # ulkeler = ulkeDict(keys=[13])
     # FRANSA, ISPANYA, VUNATU, RUSYA, ABD, AVUSTURYA, MOGOLISTAN, BELCIKA,
     # ALMANYA, INGILTERE, ENDONEZYA,
     for ulke in ulkeler:
-        respStates = sehirlerDbJsonReq(ulke,True)
+        respStates = sehirlerDbJsonReq(ulke, True)
         ulkeler[ulke]['Childs'] = respStates  # sehirlerDbJsonReq( ulke )
-        fireBaseIO(app='ahmedseref', url=ulke+'/Childs',
+        fireBaseIO(app='ahmedseref', path=ulke + '/Childs',
                    data=respStates, bigdata=True)
-        # fireBaseIO(app='ahmedseref', url='_TESTS/',
-                    # data=respStates, method = 'patch',bigdata=True)
+        # fireBaseIO(app='ahmedseref', path='_TESTS/',
+        # data=respStates, method = 'patch',bigdata=True)
 
         if ulke in ['52', '2', '33']:
             for sehir in ulkeler[ulke]['Childs']:
@@ -30,11 +31,13 @@ def bb():
                 _text, _value = packed['Text'], packed['Value']
                 resp = ilcelerDbJsonReq(_value)
                 fireBaseIO(app='ahmedseref',
-                           url=ulke + '/Childs/' + _text + '/Childs',
+                           path=ulke + '/Childs/' + _text + '/Childs',
                            data=resp)
                 # ulkeler[ulke]['Childs'][_text] = resp
 
     return
+
+
 def updatePrayerTimes(*args, **kwargs):
     """docstring for updatePrayerTimes"""
     source = dict(countryName='1', stateName=15156, name=15156)
@@ -51,13 +54,14 @@ def bubi():
     bulky = dict()
     # ulkeler = ulkedbv2.ulkeDict().keys()[190:]
     ulkeler = ulkedbv2.ulkeDict(keys=[21, 23, 207, 35, 60, 61,
-                             13, 15, 117, 204, 49, 146, 208])
+                                      13, 15, 117, 204, 49, 146, 208])
     ulkeler = ['13']
     for ulke in ulkeler:
         ukey = str(ulke)
         print ' > Trying %s ' % ulke
         bulky[ukey] = dict()
-        db = requests.get('https://ahmedseref.firebaseio.com/%s.json' % ulke).json()
+        db = requests.get(
+            'https://ahmedseref.firebaseio.com/%s.json' % ulke).json()
         if int(ulke) not in [52, 2, 33]:
             for i in db['Childs']:
                 if not db['Childs'][i].has_key('Value'):
@@ -92,8 +96,11 @@ def bubi():
                 except:
                     print '----- ERROR ---- in %s' % city  # TEKİRDAĞ
                     pass
-        fireBaseIO(app='namazvaktim', url=ulke, data=bulky[ulke],bigdata=True)
+        fireBaseIO(
+            app='namazvaktim', path=ulke, data=bulky[ulke], bigdata=True)
         print '%s \t OK' % ulke
     # data2json(bulky, 'bulky')
-    # fireBaseIO(app = 'namazvaktim' url ='', data = bulky )
+    # fireBaseIO(app = 'namazvaktim' path ='', data = bulky )
     return
+if __name__ == '__main__':
+    pass
