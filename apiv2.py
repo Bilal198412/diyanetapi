@@ -4,6 +4,7 @@
 import logging
 import json
 from tools.toolkits import filterize
+from tools.firebase import fireBaseIO
 import requests
 try:
     from google.appengine.api import memcache
@@ -129,6 +130,16 @@ def prayerTimes(*args, **kwargs):
     countryName=2,
     minimal=True
     """
+    # fetch country/city/state.json
+    # assign data['SehirAdi'] -> resp['text']
+    # TODO accept city id as kwargs
+    # İlçe isimlerini düzeltmek için şehir IDsi gerekiyor.
+    #
+    from db import data
+    fb_path = '2/%s/%s' % (data[kwargs['nid']], kwargs['nid'])
+
+    fixed_city_name = fireBaseIO('namazvaktim', fb_path)['text']
+
     json_data = diyanetApiReq(url='PrayerTime/PrayerTimesSet',
                               qargs={'countryName': None,
                                      'stateName': None,
@@ -143,6 +154,7 @@ def prayerTimes(*args, **kwargs):
             data[k] = json_data[k]
     else:
         data = json_data
+    data['SehirAdi'] = fixed_city_name
     return data
 
 
