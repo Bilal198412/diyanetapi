@@ -16,7 +16,7 @@ except:
 # logging.debug ( memcache.get(xx) )
 # logging.debug ( ' ********************')
 
-
+# TODO Move cache decorator outside and use fireBaseIO
 def func_hash(*args, **kwargs):
 
     # TODO improve this by all types so calc hashes with no exception
@@ -54,9 +54,6 @@ def func_hash(*args, **kwargs):
         return hash(tuple(hlist))
 
     return str(hash_kwargs(**kwargs) + hash_args(*args))
-
-# def cache(func):
-
 
 class cache(object):
 
@@ -121,7 +118,6 @@ def fillCity(cityId, *args, **kwargs):
     return data
 
 
-@cache
 def prayerTimes(*args, **kwargs):
     """
     Parameters
@@ -157,7 +153,6 @@ def prayerTimes(*args, **kwargs):
     data['SehirAdi'] = fixed_city_name
     return data
 
-
 @cache
 def diyanetApiReq(url, qargs, method='get', filter=True, *args, **kwargs):
     # import ipdb; ipdb.set_trace() # BREAKPOINT
@@ -188,8 +183,8 @@ if __name__ == '__main__':
     @cache
     def foo(*args, **kwargs):
         return kwargs['nid'] + 1
-
-    print foo(nid=55555)
+    print prayerTimes(nid='9955')
+    # print foo(nid=55555)
     # print foo(nid=10000)
     # print foo(nid=10)
     # print foo(nid=100)
